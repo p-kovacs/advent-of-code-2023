@@ -50,6 +50,8 @@ class RangeTest {
         assertEquals(x.count(), x.stream().count());
 
         assertEquals("[12..42]", x.toString());
+        assertEquals("[17..47]", x.shift(5).toString());
+        assertEquals("[10..40]", x.shift(-2).toString());
     }
 
     @Test

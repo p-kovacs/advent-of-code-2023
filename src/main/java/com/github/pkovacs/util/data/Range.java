@@ -109,6 +109,14 @@ public record Range(long min, long max) {
     }
 
     /**
+     * Returns a new range by shifting this range with the given signed delta value. For example, shifting
+     * {@code [5..9]} with 2 results in {@code [7..11]}, while shifting with -3 results in {@code [2..6]}.
+     */
+    public Range shift(long delta) {
+        return new Range(min + delta, max + delta);
+    }
+
+    /**
      * Returns a sorted stream of the {@code long} values within this range.
      */
     public LongStream stream() {
