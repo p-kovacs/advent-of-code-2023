@@ -3,13 +3,12 @@ package com.github.pkovacs.aoc.y2023;
 import java.util.List;
 import java.util.stream.LongStream;
 
-import com.github.pkovacs.aoc.AocUtils;
-import com.github.pkovacs.util.Utils;
+import com.github.pkovacs.aoc.AbstractDay;
 
-public class Day06 {
+public class Day06 extends AbstractDay {
 
     public static void main(String[] args) {
-        var lines = Utils.readLines(AocUtils.getInputPath());
+        var lines = readLines(getInputPath());
 
         System.out.println("Part 1: " + solve(lines, 1));
         System.out.println("Part 2: " + solve(lines, 2));
@@ -29,7 +28,7 @@ public class Day06 {
     }
 
     private static long[] parseLine(String line, int part) {
-        return Utils.parseLongs(part == 1 ? line : line.replace(" ", ""));
+        return parseLongs(part == 1 ? line : line.replace(" ", ""));
     }
 
 }

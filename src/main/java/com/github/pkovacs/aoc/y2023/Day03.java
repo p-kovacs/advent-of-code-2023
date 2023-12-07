@@ -6,14 +6,13 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import com.github.pkovacs.aoc.AocUtils;
+import com.github.pkovacs.aoc.AbstractDay;
 import com.github.pkovacs.util.RegexUtils;
-import com.github.pkovacs.util.Utils;
 
-public class Day03 {
+public class Day03 extends AbstractDay {
 
     public static void main(String[] args) {
-        var lines = Utils.readLines(AocUtils.getInputPath());
+        var lines = readLines(getInputPath());
 
         var operands = IntStream.range(0, lines.size()).boxed()
                 .flatMap(i -> parseOperands(lines, i))

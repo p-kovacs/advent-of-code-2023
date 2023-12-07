@@ -4,13 +4,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import com.github.pkovacs.aoc.AocUtils;
-import com.github.pkovacs.util.Utils;
+import com.github.pkovacs.aoc.AbstractDay;
 
-public class Day02 {
+public class Day02 extends AbstractDay {
 
     public static void main(String[] args) {
-        var lines = Utils.readLines(AocUtils.getInputPath());
+        var lines = readLines(getInputPath());
 
         var games = lines.stream().map(Day02::parseGame).toList();
 

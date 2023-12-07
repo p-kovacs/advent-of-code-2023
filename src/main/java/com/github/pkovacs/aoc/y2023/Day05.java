@@ -5,17 +5,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
-import com.github.pkovacs.aoc.AocUtils;
+import com.github.pkovacs.aoc.AbstractDay;
 import com.github.pkovacs.util.Utils;
 import com.github.pkovacs.util.data.Range;
 
-public class Day05 {
+public class Day05 extends AbstractDay {
 
     public static void main(String[] args) {
-        var blocks = Utils.readLineBlocks(AocUtils.getInputPath());
+        var blocks = readLineBlocks(getInputPath());
 
         // Collect initial ranges for part 1 and part 2
-        var seeds = Utils.parseLongs(blocks.get(0).get(0));
+        var seeds = parseLongs(blocks.get(0).get(0));
         var ranges1 = Arrays.stream(seeds).mapToObj(s -> new Range(s, s)).toList();
         var ranges2 = new ArrayList<Range>();
         for (int i = 0; i < seeds.length; i += 2) {
@@ -26,7 +26,7 @@ public class Day05 {
         var maps = new ArrayList<List<RangeConverter>>();
         for (int i = 1; i < blocks.size(); i++) {
             maps.add(blocks.get(i).stream().skip(1)
-                    .map(line -> Utils.parseLongs(line))
+                    .map(Utils::parseLongs)
                     .map(v -> new RangeConverter(new Range(v[1], v[1] + v[2] - 1), v[0] - v[1]))
                     .toList());
         }

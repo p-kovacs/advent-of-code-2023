@@ -2,20 +2,17 @@ package com.github.pkovacs.aoc.y2023;
 
 import java.util.Arrays;
 
-import com.github.pkovacs.aoc.AocUtils;
-import com.github.pkovacs.util.Utils;
+import com.github.pkovacs.aoc.AbstractDay;
 
-public class Day04 {
+public class Day04 extends AbstractDay {
 
     public static void main(String[] args) {
-        var lines = Utils.readLines(AocUtils.getInputPath());
+        var lines = readLines(getInputPath());
 
         var win = new int[lines.size()];
         for (int i = 0; i < lines.size(); i++) {
             var parts = lines.get(i).split(":")[1].split("[|]");
-            var left = Utils.setOf(Utils.parseInts(parts[0]));
-            var right = Utils.setOf(Utils.parseInts(parts[1]));
-            win[i] = Utils.intersectionOf(left, right).size();
+            win[i] = intersectionOf(setOf(parseInts(parts[0])), setOf(parseInts(parts[1]))).size();
         }
 
         int ans1 = Arrays.stream(win).filter(i -> i > 0).map(i -> 1 << (i - 1)).sum();

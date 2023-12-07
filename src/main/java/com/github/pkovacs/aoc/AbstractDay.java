@@ -6,16 +6,17 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 import com.github.pkovacs.util.InputUtils;
+import com.github.pkovacs.util.Utils;
 
 /**
- * Provides a helper method to locate puzzle input files.
+ * Absract base class of the DayN classes. It provides a helper method to locate puzzle input files.
  */
-public final class AocUtils {
+public abstract class AbstractDay extends Utils {
 
     private static final Pattern classNamePattern =
             Pattern.compile("com[.]github[.]pkovacs[.]aoc[.]y20\\d\\d.Day\\d\\d");
 
-    private AocUtils() {
+    protected AbstractDay() {
     }
 
     /**
@@ -30,7 +31,7 @@ public final class AocUtils {
                 .findFirst()
                 .map(name -> "/" + name.toLowerCase(Locale.ENGLISH).replace(".", "/") + ".txt")
                 .orElseThrow(() -> new RuntimeException("Input file not found."));
-        return InputUtils.getPath(AocUtils.class, path);
+        return InputUtils.getPath(AbstractDay.class, path);
     }
 
 }

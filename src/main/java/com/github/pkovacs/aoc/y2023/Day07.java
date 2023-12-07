@@ -4,13 +4,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import com.github.pkovacs.aoc.AocUtils;
+import com.github.pkovacs.aoc.AbstractDay;
 import com.github.pkovacs.util.Utils;
 
-public class Day07 {
+public class Day07 extends AbstractDay {
 
     public static void main(String[] args) {
-        var lines = Utils.readLines(AocUtils.getInputPath());
+        var lines = readLines(getInputPath());
 
         System.out.println("Part 1: " + solve(lines, false));
         System.out.println("Part 2: " + solve(lines, true));
