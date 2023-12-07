@@ -1,6 +1,7 @@
 package com.github.pkovacs.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -119,8 +121,12 @@ class UtilsTest {
         assertEquals(List.of('h', 'e', 'l', 'l', 'o'), Utils.charsOf("hello").toList());
         assertEquals(2, Utils.charsOf("hello").filter(c -> c == 'l').count());
 
+        assertEquals(List.of('h', 'e', 'l', 'l', 'o'), Utils.streamOf("hello").toList());
+        assertEquals(2, Utils.streamOf("hello").filter(c -> c == 'l').count());
+
         assertEquals(List.of('h', 'e', 'l', 'l', 'o'), Utils.listOf(x));
         assertEquals(Set.of('h', 'e', 'l', 'o'), Utils.setOf(x));
+        assertEquals(3, Utils.streamOf("hello").filter(c -> c != 'l').count());
         assertEquals(3, Utils.streamOf("hello".toCharArray()).filter(c -> c != 'l').count());
 
         assertEquals('a', Utils.min('c', 'a', 'f', 'b'));
@@ -130,6 +136,21 @@ class UtilsTest {
 
         assertThrows(NoSuchElementException.class, () -> Utils.min(new char[0]));
         assertThrows(NoSuchElementException.class, () -> Utils.max(new char[0]));
+    }
+
+    @Test
+    public void testCountMethods() {
+        assertEquals(3, Utils.countOf(List.of(1, 2, 3, 2, 1, 2, 3), 2));
+        assertEquals(2, Utils.countOf(List.of("a", "b", "c", "b"), "b"));
+        assertEquals(1, Utils.countOf(List.of("a", "b", "c", "b"), "c"));
+        assertEquals(0, Utils.countOf(List.of("a", "b", "c", "b"), "d"));
+        assertEquals(2, Utils.countOf(List.of("a", "bc", "d", "bc"), "bc"));
+        assertEquals(2, Utils.countOf(Arrays.asList("a", null, "d", null), null));
+
+        assertEquals(3, Utils.countOf("abcdcbab", 'b'));
+        assertEquals(2, Utils.countOf("abcdcbab", 'c'));
+        assertEquals(1, Utils.countOf("abcdcbab", 'd'));
+        assertEquals(0, Utils.countOf("abcdcbab", 'e'));
     }
 
     @Test

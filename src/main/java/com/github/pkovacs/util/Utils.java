@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -198,66 +199,74 @@ public class Utils extends InputUtils {
     }
 
     /**
-     * Returns the elements of the given {@code int} array as an unmodifiable list.
+     * Returns the given {@code int} values as an unmodifiable list.
      */
-    public static List<Integer> listOf(int[] ints) {
+    public static List<Integer> listOf(int... ints) {
         return streamOf(ints).boxed().toList();
     }
 
     /**
-     * Returns the elements of the given {@code int} array as an unmodifiable set.
+     * Returns the given {@code int} values as an unmodifiable set.
      */
-    public static Set<Integer> setOf(int[] ints) {
+    public static Set<Integer> setOf(int... ints) {
         return streamOf(ints).boxed().collect(Collectors.toUnmodifiableSet());
     }
 
     /**
-     * Returns the elements of the given {@code int} array as an {@link IntStream}.
+     * Returns the given {@code int} values as an {@link IntStream}.
      */
-    public static IntStream streamOf(int[] ints) {
+    public static IntStream streamOf(int... ints) {
         return IntStream.of(ints);
     }
 
     /**
-     * Returns the elements of the given {@code long} array as an unmodifiable list.
+     * Returns the given {@code long} values as an unmodifiable list.
      */
-    public static List<Long> listOf(long[] longs) {
+    public static List<Long> listOf(long... longs) {
         return streamOf(longs).boxed().toList();
     }
 
     /**
-     * Returns the elements of the given {@code long} array as an unmodifiable set.
+     * Returns the given {@code long} values as an unmodifiable set.
      */
-    public static Set<Long> setOf(long[] longs) {
+    public static Set<Long> setOf(long... longs) {
         return streamOf(longs).boxed().collect(Collectors.toUnmodifiableSet());
     }
 
     /**
-     * Returns the elements of the given {@code long} array as a {@link LongStream}.
+     * Returns the given {@code long} values as a {@link LongStream}.
      */
-    public static LongStream streamOf(long[] longs) {
+    public static LongStream streamOf(long... longs) {
         return LongStream.of(longs);
     }
 
     /**
-     * Returns the elements of the given {@code char} array as an unmodifiable list.
+     * Returns the given {@code char} values as an unmodifiable list.
      */
-    public static List<Character> listOf(char[] chars) {
+    public static List<Character> listOf(char... chars) {
         return streamOf(chars).toList();
     }
 
     /**
-     * Returns the elements of the given {@code char} array as an unmodifiable set.
+     * Returns the given {@code char} values as an unmodifiable set.
      */
-    public static Set<Character> setOf(char[] chars) {
+    public static Set<Character> setOf(char... chars) {
         return streamOf(chars).collect(Collectors.toUnmodifiableSet());
     }
 
     /**
-     * Returns the elements of the given {@code char} array as a stream.
+     * Returns the given {@code char} values as a stream.
      */
-    public static Stream<Character> streamOf(char[] chars) {
+    public static Stream<Character> streamOf(char... chars) {
         return IntStream.range(0, chars.length).mapToObj(i -> chars[i]);
+    }
+
+    /**
+     * Returns the characters of the given {@code CharSequence} as a stream.
+     * This is an alias for {@link #charsOf(CharSequence)}.
+     */
+    public static Stream<Character> streamOf(CharSequence s) {
+        return charsOf(s);
     }
 
     /**
@@ -265,6 +274,20 @@ public class Utils extends InputUtils {
      */
     public static Stream<Character> charsOf(CharSequence s) {
         return s.toString().chars().mapToObj(i -> (char) i);
+    }
+
+    /**
+     * Returns the occurrence count of the given value in the given collection.
+     */
+    public static <T> int countOf(Collection<T> collection, T value) {
+        return (int) collection.stream().filter(v -> Objects.equals(v, value)).count();
+    }
+
+    /**
+     * Returns the occurrence count of the given character in the given string.
+     */
+    public static int countOf(CharSequence s, char ch) {
+        return (int) charsOf(s).filter(c -> c == ch).count();
     }
 
     /**
