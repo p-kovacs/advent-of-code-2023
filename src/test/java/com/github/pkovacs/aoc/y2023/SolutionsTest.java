@@ -12,7 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-public class AocSolutionsTest {
+public class SolutionsTest {
 
     private final PrintStream origOut = System.out;
     private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
