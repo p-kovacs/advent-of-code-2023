@@ -175,7 +175,7 @@ public class Utils extends InputUtils {
     }
 
     /**
-     * Returns a deep copy of the given int matrix.
+     * Returns a deep copy of the given {@code int} matrix.
      * The "rows" might have different sizes, but null arrays are not supported.
      */
     public static int[][] deepCopyOf(int[][] matrix) {
@@ -183,7 +183,7 @@ public class Utils extends InputUtils {
     }
 
     /**
-     * Returns a deep copy of the given long matrix.
+     * Returns a deep copy of the given {@code long} matrix.
      * The "rows" might have different sizes, but null arrays are not supported.
      */
     public static long[][] deepCopyOf(long[][] matrix) {
@@ -191,11 +191,44 @@ public class Utils extends InputUtils {
     }
 
     /**
-     * Returns a deep copy of the given char matrix.
+     * Returns a deep copy of the given {@code char} matrix.
      * The "rows" might have different sizes, but null arrays are not supported.
      */
     public static char[][] deepCopyOf(char[][] matrix) {
         return Arrays.stream(matrix).map(a -> a.clone()).toArray(char[][]::new);
+    }
+
+    /**
+     * Returns an {@code int} array that is the reverse of the given array.
+     */
+    public static int[] reverseOf(int[] ints) {
+        var result = new int[ints.length];
+        for (int i = 0, j = ints.length - 1; j >= 0; i++, j--) {
+            result[i] = ints[j];
+        }
+        return result;
+    }
+
+    /**
+     * Returns a {@code long} array that is the reverse of the given array.
+     */
+    public static long[] reverseOf(long[] longs) {
+        var result = new long[longs.length];
+        for (int i = 0, j = longs.length - 1; j >= 0; i++, j--) {
+            result[i] = longs[j];
+        }
+        return result;
+    }
+
+    /**
+     * Returns a {@code char} array that is the reverse of the given array.
+     */
+    public static char[] reverseOf(char[] chars) {
+        var result = new char[chars.length];
+        for (int i = 0, j = chars.length - 1; j >= 0; i++, j--) {
+            result[i] = chars[j];
+        }
+        return result;
     }
 
     /**
