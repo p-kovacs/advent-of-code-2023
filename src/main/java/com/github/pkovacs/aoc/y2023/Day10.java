@@ -18,6 +18,7 @@ public class Day10 extends AbstractDay {
 
         System.out.println("Part 1: " + solve1(table));
         System.out.println("Part 2: " + solve2(table));
+        // System.out.println("Part 2: " + solve2alt(table)); // alternative solution
     }
 
     private static long solve1(CharTable table) {
@@ -80,6 +81,45 @@ public class Day10 extends AbstractDay {
             case 'F' -> Stream.of(Direction.SOUTH, Direction.EAST);
             default -> Stream.of();
         };
+    }
+
+    /**
+     * Another solution for part 2 using the method used by others. This is probably the "intended" approach.
+     */
+    private static int solve2alt(CharTable table) {
+        // Clear cells except for the main loop
+        var loop = Bfs.run(table.find('S'), cell -> pipeNeighbors(table, cell)).keySet();
+        table.cells().filter(c -> !loop.contains(c)).forEach(c -> table.set(c, '.'));
+
+        // Replace S symbol (it's inconvenient, but can be necessary)
+        var start = table.find('S');
+        var origNeighbors = pipeNeighbors(table, start);
+        for (var ch : "|-LJ7F".toCharArray()) {
+            table.set(start, ch);
+            if (pipeNeighbors(table, start).equals(origNeighbors)) {
+                break;
+            }
+        }
+
+        // Count inner cells for each row
+        int count = 0;
+        for (int i = 0; i < table.rowCount(); i++) {
+            boolean inner = false;
+            char lastBend = '*';
+            for (int j = 0; j < table.colCount(); j++) {
+                var ch = table.get(i, j);
+                if (ch == 'L' || ch == 'F' || ch == '7' || ch == 'J') {
+                    inner = (lastBend == 'L' && ch == '7') || (lastBend == 'F' && ch == 'J') ? !inner : inner;
+                    lastBend = ch;
+                } else if (ch == '|') {
+                    inner = !inner;
+                } else if (ch == '.' && inner) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
     }
 
 }
