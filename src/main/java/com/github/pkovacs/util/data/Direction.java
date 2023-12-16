@@ -53,6 +53,20 @@ public enum Direction {
     }
 
     /**
+     * Returns true if this direction is horizontal: EAST or WEST.
+     */
+    public boolean isHorizontal() {
+        return this == EAST || this == WEST;
+    }
+
+    /**
+     * Returns true if this direction is vertical: NORTH or SOUTH.
+     */
+    public boolean isVertical() {
+        return this == NORTH || this == SOUTH;
+    }
+
+    /**
      * Returns the opposite of this direction.
      */
     public Direction opposite() {
@@ -108,7 +122,6 @@ public enum Direction {
             case SOUTH -> NORTH;
             default -> this;
         };
-
     }
 
 }
