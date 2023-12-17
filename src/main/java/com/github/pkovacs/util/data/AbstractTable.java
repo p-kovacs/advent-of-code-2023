@@ -58,10 +58,38 @@ public abstract class AbstractTable<V> {
     }
 
     /**
+     * Returns an ordered stream of the cells in the first row of this table.
+     */
+    public Stream<Cell> firstRow() {
+        return row(0);
+    }
+
+    /**
+     * Returns an ordered stream of the cells in the last row of this table.
+     */
+    public Stream<Cell> lastRow() {
+        return row(rowCount() - 1);
+    }
+
+    /**
      * Returns an ordered stream of the cells in the specified column of this table.
      */
     public Stream<Cell> col(int j) {
         return IntStream.range(0, rowCount()).mapToObj(i -> new Cell(i, j));
+    }
+
+    /**
+     * Returns an ordered stream of the cells in the first column of this table.
+     */
+    public Stream<Cell> firstCol() {
+        return col(0);
+    }
+
+    /**
+     * Returns an ordered stream of the cells in the last column of this table.
+     */
+    public Stream<Cell> lastCol() {
+        return col(colCount() - 1);
     }
 
     /**

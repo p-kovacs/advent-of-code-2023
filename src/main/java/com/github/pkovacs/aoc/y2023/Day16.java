@@ -18,10 +18,10 @@ public class Day16 extends AbstractDay {
         long ans1 = count(table, new State(table.topLeft(), Direction.EAST));
 
         long ans2 = Stream.of(
-                table.row(0).map(c -> new State(c, Direction.SOUTH)),
-                table.row(table.rowCount() - 1).map(c -> new State(c, Direction.NORTH)),
-                table.col(0).map(c -> new State(c, Direction.EAST)),
-                table.col(table.colCount() - 1).map(c -> new State(c, Direction.WEST))
+                table.firstRow().map(c -> new State(c, Direction.SOUTH)),
+                table.lastRow().map(c -> new State(c, Direction.NORTH)),
+                table.firstCol().map(c -> new State(c, Direction.EAST)),
+                table.lastCol().map(c -> new State(c, Direction.WEST))
         ).flatMap(s -> s).mapToLong(s -> count(table, s)).max().orElseThrow();
 
         System.out.println("Part 1: " + ans1);
@@ -30,18 +30,18 @@ public class Day16 extends AbstractDay {
 
     private static long count(CharTable table, State start) {
         var res = Bfs.run(start, st -> {
-            var list = new ArrayList<State>();
             char ch = table.get(st.cell);
+            var list = new ArrayList<State>();
             if (ch == '.' || (ch == '-' && st.dir.isHorizontal()) || (ch == '|' && st.dir.isVertical())) {
-                list.add(st.neighbor(st.dir)); // go forward
+                list.add(st.step(st.dir)); // go forward
             }
             if (((ch == '-' || ch == '/') && st.dir.isVertical())
                     || ((ch == '|' || ch == '\\') && st.dir.isHorizontal())) {
-                list.add(st.neighbor(st.dir.rotateRight())); // turn right
+                list.add(st.step(st.dir.rotateRight())); // turn right
             }
             if (((ch == '-' || ch == '\\') && st.dir.isVertical())
                     || ((ch == '|' || ch == '/') && st.dir.isHorizontal())) {
-                list.add(st.neighbor(st.dir.rotateLeft())); // turn left
+                list.add(st.step(st.dir.rotateLeft())); // turn left
             }
             return list.stream().filter(s -> table.containsCell(s.cell)).toList();
         });
@@ -49,8 +49,8 @@ public class Day16 extends AbstractDay {
     }
 
     private record State(Cell cell, Direction dir) {
-        State neighbor(Direction dir) {
-            return new State(cell.neighbor(dir), dir);
+        State step(Direction newDir) {
+            return new State(cell.neighbor(newDir), newDir);
         }
     }
 
