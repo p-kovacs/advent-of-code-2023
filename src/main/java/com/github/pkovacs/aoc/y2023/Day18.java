@@ -23,10 +23,12 @@ public class Day18 extends AbstractDay {
     public static void main(String[] args) {
         var lines = readLines(getInputPath());
 
-        System.out.println("Part 1: " + solve(lines, 1));
+//        System.out.println("Part 1: " + solve(lines, 1));
 //        System.out.println("Part 1: " + solveWithRowScanning(lines, 1));
-        System.out.println("Part 2: " + solve(lines, 2));
+        System.out.println("Part 1: " + solveWithFormula(lines, 1));
+//        System.out.println("Part 2: " + solve(lines, 2));
 //        System.out.println("Part 2: " + solveWithRowScanning(lines, 2));
+        System.out.println("Part 2: " + solveWithFormula(lines, 2));
     }
 
     /**
@@ -148,6 +150,38 @@ public class Day18 extends AbstractDay {
         }
 
         return total;
+    }
+
+    /**
+     * The most advanced solution based on the <a href="https://en.wikipedia.org/wiki/Shoelace_formula">Trapezoid
+     * Shoelace formula</a> and <a href="https://en.wikipedia.org/wiki/Pick%27s_theorem">Pick's theorem</a>.
+     * We assume that the instructions describe a <i>simple polygon</i>: it does not intersect with itself.
+     * <p>
+     * <b>Trapezoid Shoelace formula:</b> given the vertices (corners) of a simple polygon in counterclockwise order,
+     * the area of the polygon can be calculated as: {@code 1/2 * SUM_{i in 1..n} ((y[i] + y[i+1]) * (x[i] - x[i+1]))},
+     * where the (n+1)-th vertex is the same as the first one. If the vertices are in clockwise order, then this sum
+     * is negative, and its absolute value is the area of the polygon.
+     * <p>
+     * <b>Pick's theorem:</b> given a simple polygon that has integer coordinates for all of its vertices (corners),
+     * let {@code A} denote the area of the polygon, let {@code I} denote the number of integer points interior
+     * to the polygon, and let {@code B} denote the number of integer points on its boundary (including both vertices
+     * and points along the sides). Then {@code A = I + B/2 - 1}.
+     * <p>
+     * Our task is to calculate {@code I + B}, for which we can derive the formula {@code I + B = A + B/2 + 1} from
+     * Pick's theorem, and {@code A} is calculated using the Trapezoid Shoelace formula.
+     */
+    private static long solveWithFormula(List<String> lines, int part) {
+        var points = parse(lines, part);
+
+        long sum = 0;
+        long border = 0;
+        for (int i = 0; i < points.size() - 1; i++) {
+            var a = points.get(i);
+            var b = points.get(i + 1);
+            sum += (long) (a.y() + b.y()) * (a.x() - b.x());
+            border += a.dist1(b);
+        }
+        return (Math.abs(sum) + border) / 2 + 1;
     }
 
     private static List<Point> parse(List<String> lines, int part) {
