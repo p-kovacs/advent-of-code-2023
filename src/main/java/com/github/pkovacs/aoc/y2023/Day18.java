@@ -1,12 +1,17 @@
 package com.github.pkovacs.aoc.y2023;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import com.github.pkovacs.aoc.AbstractDay;
+import com.github.pkovacs.util.alg.Bfs;
 import com.github.pkovacs.util.data.Point;
 import com.github.pkovacs.util.data.Range;
 
@@ -19,11 +24,53 @@ public class Day18 extends AbstractDay {
         var lines = readLines(getInputPath());
 
         System.out.println("Part 1: " + solve(lines, 1));
+//        System.out.println("Part 1: " + solveWithRowScanning(lines, 1));
         System.out.println("Part 2: " + solve(lines, 2));
+//        System.out.println("Part 2: " + solveWithRowScanning(lines, 2));
     }
 
     /**
-     * Solves the puzzle using a similar approach for detecting interior area as the "row scanning" solution for
+     * Solves the puzzle by "compressing" the ranges of x and y coordinates between the corners (bends) of the loop.
+     * Each compressed point represents a rectangle of original points. The exterior area is detected using a
+     * traversal in this compressed space, then the remaining compressed points are mapped to the corresponding
+     * rectangles, and the sum of their areas are calculated.
+     */
+    private static long solve(List<String> lines, int part) {
+        var points = parse(lines, part);
+
+        // Sort the x and y coordinates of the original corner points of the loop
+        var xs = points.stream().mapToInt(Point::x).sorted().distinct().toArray();
+        var ys = points.stream().mapToInt(Point::y).sorted().distinct().toArray();
+
+        // Function to map an original corner point to the corresponding compressed point
+        Function<Point, Point> compress =
+                p -> new Point(Arrays.binarySearch(xs, p.x()) * 2 + 1, Arrays.binarySearch(ys, p.y()) * 2 + 1);
+
+        // Collect all compressed points of the loop (not only the corners)
+        var loop = new HashSet<Point>();
+        for (int i = 0; i < points.size() - 1; i++) {
+            var a = compress.apply(points.get(i));
+            var b = compress.apply(points.get(i + 1));
+            a.lineTo(b).forEach(loop::add);
+        }
+
+        // Find the compressed points that are outside the loop
+        var box = Point.box(xs.length * 2 + 1, ys.length * 2 + 1).collect(Collectors.toSet());
+        var outside = Bfs.run(new Point(0, 0),
+                p -> p.neighbors().filter(n -> box.contains(n) && !loop.contains(n)).toList()).keySet();
+
+        // Calculate the sum of the areas of the rectangles that correspond to the relevant compressed points
+        return box.stream()
+                .filter(p -> !outside.contains(p))
+                .mapToLong(p -> {
+                    long xSize = p.x() % 2 == 1 ? 1 : (xs[p.x() / 2] - xs[(p.x() - 2) / 2]) - 1;
+                    long ySize = p.y() % 2 == 1 ? 1 : (ys[p.y() / 2] - ys[(p.y() - 2) / 2]) - 1;
+                    return xSize * ySize;
+                }).sum();
+    }
+
+    /**
+     * Another solution that uses a similar approach for detecting interior area as the "row scanning" solution for
      * Day 10. We assume that the instructions describe a <i>simple polygon</i>: it does not intersect with itself.
      * <p>
      * The same characters are used to represent the loop (|, L, 7, F, J) as for Day 10, but horizontal borders (-)
@@ -31,7 +78,7 @@ public class Day18 extends AbstractDay {
      * make it efficient, consecutive rows with the same pattern are merged and represented as a range of y
      * coordinates.
      */
-    private static long solve(List<String> lines, int part) {
+    private static long solveWithRowScanning(List<String> lines, int part) {
         var points = parse(lines, part);
 
         // Data structure to store the border pattern for each range of rows (i.e. y coordinates)
