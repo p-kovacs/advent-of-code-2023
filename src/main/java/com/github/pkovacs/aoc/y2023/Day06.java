@@ -14,6 +14,12 @@ public class Day06 extends AbstractDay {
         System.out.println("Part 2: " + solve(lines, 2));
     }
 
+    /**
+     * A simple solution for the puzzle.
+     * <p>
+     * A faster solution can also be given based on the
+     * <a href="https://en.wikipedia.org/wiki/Quadratic_formula">Quadratic formula</a>.
+     */
     private static long solve(List<String> lines, int part) {
         var times = parseLine(lines.get(0), part);
         var distances = parseLine(lines.get(1), part);

@@ -19,6 +19,8 @@ public class Day10 extends AbstractDay {
         System.out.println("Part 1: " + solve1(table));
         System.out.println("Part 2: " + solve2(table));
 //        System.out.println("Part 2: " + solveWithRowScanning(table)); // a faster solution
+
+        // Note: a formula-based solution can also be given, see Day 18
     }
 
     private static long solve1(CharTable table) {
