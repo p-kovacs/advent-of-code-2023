@@ -18,7 +18,7 @@ public class Day10 extends AbstractDay {
 
         System.out.println("Part 1: " + solve1(table));
         System.out.println("Part 2: " + solve2(table));
-        // System.out.println("Part 2: " + solve2alt(table)); // alternative solution
+//        System.out.println("Part 2: " + solveWithRowScanning(table)); // a faster solution
     }
 
     private static long solve1(CharTable table) {
@@ -84,9 +84,11 @@ public class Day10 extends AbstractDay {
     }
 
     /**
-     * Another solution for part 2 using the method used by others. This is probably the "intended" approach.
+     * Another solution for part 2 based on the "row scanning" method used by others. For each row, we check the
+     * bends from left to right, and determine if the current point is within the main loop or not. (This solution
+     * is significantly faster.)
      */
-    private static int solve2alt(CharTable table) {
+    private static int solveWithRowScanning(CharTable table) {
         // Clear cells except for the main loop
         var loop = Bfs.run(table.find('S'), cell -> pipeNeighbors(table, cell)).keySet();
         table.cells().filter(c -> !loop.contains(c)).forEach(c -> table.set(c, '.'));
