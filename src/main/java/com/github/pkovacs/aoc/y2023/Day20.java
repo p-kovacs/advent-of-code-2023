@@ -63,8 +63,8 @@ public class Day20 extends AbstractDay {
          * we need to make particular assumptions (similarly to Day 8). It seems that each input file describes
          * a configuration in which a single conjunction node sends pulse to rx. Let's call this node the "sink".
          * Furthermore, each input node of the sink sends a high pulse in every k-th iteration. Therefore, the
-         * answer for part 2 is the LCM of these cycle lengths. This solution exploits these assumptions without
-         * checking them.
+         * answer for part 2 is the least common multiple (LCM) of these cycle lengths. This solution exploits
+         * the assumptions without checking them.
          * <p>
          * In fact, it seems that each configuration actually combines 4 independent subsystems between the
          * broadcaster and the sink, and each subsystem independently produces a high pulse input for the sink
@@ -131,13 +131,5 @@ public class Day20 extends AbstractDay {
     private record Node(String name, char type, Map<String, PulseType> input) {}
 
     private record Pulse(String from, String to, PulseType type) {}
-
-    private static long lcm(Collection<Long> values) {
-        long ans = 1;
-        for (var v : values) {
-            ans = ans / LongMath.gcd(ans, v) * v;
-        }
-        return ans;
-    }
 
 }

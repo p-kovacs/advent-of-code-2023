@@ -175,6 +175,130 @@ public class Utils extends InputUtils {
     }
 
     /**
+     * Returns the <i>greatest common divisor</i> (GCD) of the given two non-negative {@code long} values.
+     *
+     * @throws IllegalArgumentException if {@code a < 0} or {@code b < 0}
+     */
+    public static long gcd(long a, long b) {
+        if (a < 0 || b < 0) {
+            throw new IllegalArgumentException("Negative numbers are not supported.");
+        }
+
+        return b == 0 ? a : gcd(b, a % b);
+    }
+
+    /**
+     * Returns the <i>greatest common divisor</i> (GCD) of the given non-negative {@code int} values.
+     *
+     * @throws IllegalArgumentException if any of the given values is negative
+     */
+    public static long gcd(int... values) {
+        return gcd(IntStream.of(values));
+    }
+
+    /**
+     * Returns the <i>greatest common divisor</i> (GCD) of the given non-negative {@code int} values.
+     *
+     * @throws IllegalArgumentException if any of the given values is negative
+     */
+    public static long gcd(IntStream values) {
+        return gcd(values.mapToLong(i -> i));
+    }
+
+    /**
+     * Returns the <i>greatest common divisor</i> (GCD) of the given non-negative {@code long} values.
+     *
+     * @throws IllegalArgumentException if any of the given values is negative
+     */
+    public static long gcd(long... values) {
+        return gcd(LongStream.of(values));
+    }
+
+    /**
+     * Returns the <i>greatest common divisor</i> (GCD) of the given non-negative {@code long} values.
+     *
+     * @throws IllegalArgumentException if any of the given values is negative
+     */
+    public static long gcd(LongStream values) {
+        return values.reduce(0L, (a, b) -> gcd(a, b));
+    }
+
+    /**
+     * Returns the <i>greatest common divisor</i> (GCD) of the given non-negative integers.
+     *
+     * @throws IllegalArgumentException if any of the given values is negative or not of type {@code Integer}
+     *         or {@code Long}
+     */
+    public static long gcd(Collection<? extends Number> values) {
+        if (values.stream().map(Object::getClass).anyMatch(c -> c != Integer.class && c != Long.class)) {
+            throw new IllegalArgumentException("Only Integer and Long values are supported");
+        }
+
+        return gcd(values.stream().mapToLong(Number::longValue));
+    }
+
+    /**
+     * Returns the <i>least common multiple</i> (LCM) of the given two non-negative {@code long} values.
+     */
+    public static long lcm(long a, long b) {
+        if (a < 0 || b < 0) {
+            throw new IllegalArgumentException("Negative numbers are not supported.");
+        }
+
+        return a / gcd(a, b) * b; // note: unusual order of operations to avoid overflow
+    }
+
+    /**
+     * Returns the <i>least common multiple</i> (LCM) of the given non-negative {@code int} values.
+     *
+     * @throws IllegalArgumentException if any of the given values is negative
+     */
+    public static long lcm(int... values) {
+        return lcm(IntStream.of(values));
+    }
+
+    /**
+     * Returns the <i>least common multiple</i> (LCM) of the given non-negative {@code int} values.
+     *
+     * @throws IllegalArgumentException if any of the given values is negative
+     */
+    public static long lcm(IntStream values) {
+        return lcm(values.mapToLong(i -> i));
+    }
+
+    /**
+     * Returns the <i>least common multiple</i> (LCM) of the given non-negative {@code long} values.
+     *
+     * @throws IllegalArgumentException if any of the given values is negative
+     */
+    public static long lcm(long... values) {
+        return lcm(LongStream.of(values));
+    }
+
+    /**
+     * Returns the <i>least common multiple</i> (LCM) of the given non-negative {@code long} values.
+     *
+     * @throws IllegalArgumentException if any of the given values is negative
+     */
+    public static long lcm(LongStream values) {
+        return values.reduce(1L, (a, b) -> lcm(a, b));
+    }
+
+    /**
+     * Returns the <i>least common multiple</i> (LCM) of the given non-negative integers.
+     *
+     * @throws IllegalArgumentException if any of the given values is negative or not of type {@code Integer}
+     *         or {@code Long}
+     */
+    public static long lcm(Collection<? extends Number> values) {
+        if (values.stream().map(Object::getClass).anyMatch(c -> c != Integer.class && c != Long.class)) {
+            throw new IllegalArgumentException("Only Integer and Long values are supported");
+        }
+
+        return lcm(values.stream().mapToLong(Number::longValue));
+    }
+
+    /**
      * Returns a deep copy of the given {@code int} matrix.
      * The "rows" might have different sizes, but null arrays are not supported.
      */

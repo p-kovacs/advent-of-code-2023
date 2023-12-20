@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.function.Function;
 
 import com.github.pkovacs.aoc.AbstractDay;
-import com.google.common.math.LongMath;
 
 public class Day08 extends AbstractDay {
 
@@ -60,8 +59,7 @@ public class Day08 extends AbstractDay {
 
         // Solve part 2
         // Given the assumptions discussed above, the answer for part 2 is the least common multiple (LCM)
-        // of the step counts of the source nodes, which is calculated as lcm(a,b) = a / gcd(a,b) * b
-        // (to avoid potential overflow).
+        // of the step counts of the source nodes.
         //
         // Note that these assumptions are sufficient, but not necessary to ensure the correctness of the
         // calculation. In fact, the example input for part 2 does not satisfy one of them: the step count for
@@ -69,11 +67,7 @@ public class Day08 extends AbstractDay {
         // target node 22Z the first time, independently of the position in the list of L/R steps. Therefore,
         // the calculation is correct for the example as well, but due to other reasons.
         var startNodes = left.keySet().stream().filter(s -> s.endsWith("A")).toList();
-        long ans2 = 1;
-        for (var sn : startNodes) {
-            long stepCount = calculateStepCount.apply(sn);
-            ans2 = ans2 / LongMath.gcd(ans2, stepCount) * stepCount;
-        }
+        long ans2 = lcm(startNodes.stream().mapToLong(calculateStepCount::apply));
 
         System.out.println("Part 1: " + ans1);
         System.out.println("Part 2: " + ans2);

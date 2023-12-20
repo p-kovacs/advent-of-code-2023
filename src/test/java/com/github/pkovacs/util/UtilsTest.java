@@ -7,11 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -136,6 +137,50 @@ class UtilsTest {
 
         assertThrows(NoSuchElementException.class, () -> Utils.min(new char[0]));
         assertThrows(NoSuchElementException.class, () -> Utils.max(new char[0]));
+    }
+
+    @Test
+    public void testMathMethods() {
+        assertEquals(1, Utils.gcd(3, 5));
+        assertEquals(6, Utils.gcd(210, 36));
+        assertEquals(6, Utils.gcd(36, 210));
+        assertEquals(11, Utils.gcd(11, 0));
+        assertEquals(11, Utils.gcd(0, 11));
+        assertEquals(11, Utils.gcd(0, 11));
+        assertEquals(1, Utils.gcd(1234L, 1111111111111111111L)); // 2nd param is prime
+        assertEquals(3739,
+                Utils.gcd(3739L * 3779L * 3889L * 4093L, 3739L * 3767L * 3821L * 4057L));
+        assertEquals(3739 * 4057,
+                Utils.gcd(3739L * 3779L * 3889L * 4057L, 3739L * 3767L * 3821L * 4057L));
+
+        assertEquals(3, Utils.gcd(210, 36, 15));
+        assertEquals(3, Utils.gcd(IntStream.of(15, 36, 210)));
+        assertEquals(3, Utils.gcd(LongStream.of(15, 36, 210)));
+        assertEquals(3, Utils.gcd(List.of(15, 36, 210)));
+        assertEquals(3, Utils.gcd(List.of(15L, 36L, 210L)));
+        assertEquals(35,
+                Utils.gcd(3 * 3 * 5 * 7 * 11, 5 * 7 * 7 * 11 * 17, 2 * 2 * 5 * 5 * 7 * 19 * 29));
+        assertEquals(4057,
+                Utils.gcd(3739L * 3889L * 4057L, 3739L * 3767L * 4057L, 3767L * 3889L * 4057L));
+
+        assertEquals(15, Utils.lcm(3, 5));
+        assertEquals(30, Utils.lcm(15, 6));
+        assertEquals(3739L * 3821L * 3889L * 4057L,
+                Utils.lcm(3739L * 3889L * 4057L, 3739L * 3821L * 4057L));
+        assertEquals(3739L * 3821L * 3889L * 4057L * 4093L,
+                Utils.lcm(3739L * 3889L * 4057L * 4093L, 3739L * 3821L * 4057L));
+        assertEquals(3739L * 3739L * 3821L * 3889L * 4057L,
+                Utils.lcm(3739L * 3889L * 4057L, 3739L * 3739L * 3821L * 4057L));
+
+        assertEquals(1260, Utils.lcm(210, 36, 15));
+        assertEquals(1260, Utils.lcm(IntStream.of(15, 36, 210)));
+        assertEquals(1260, Utils.lcm(LongStream.of(15, 36, 210)));
+        assertEquals(1260, Utils.lcm(List.of(15, 36, 210)));
+        assertEquals(1260, Utils.lcm(List.of(15L, 36L, 210L)));
+        assertEquals(2L * 2 * 3 * 3 * 5 * 5 * 7 * 7 * 11 * 17 * 19 * 29,
+                Utils.lcm(3 * 3 * 5 * 7 * 11, 5 * 7 * 7 * 11 * 17, 2 * 2 * 5 * 5 * 7 * 19 * 29));
+        assertEquals(3739L * 3767L * 3889L * 4057L,
+                Utils.lcm(3739L * 3889L * 4057L, 3739L * 3767L * 4057L, 3767L * 3889L * 4057L));
     }
 
     @Test
