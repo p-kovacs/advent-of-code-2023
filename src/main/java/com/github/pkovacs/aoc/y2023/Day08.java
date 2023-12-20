@@ -21,9 +21,9 @@ public class Day08 extends AbstractDay {
             right.put(from, line.substring(12, 15));
         }
 
-        // Function for calculating the step count from a given source node "..A" to a target node "..Z".
-        // Although it's not specified in the puzzle description, it seems that from any source node "..A", exactly
-        // one target node "..Z" can be reached, and the step count for the path ..A->..Z is the same as the step
+        // Function for calculating the step count from a given source node ..A to a target node ..Z.
+        // Although it's not specified in the puzzle description, it seems that from any source node ..A, exactly
+        // one target node ..Z can be reached, and the step count for the path ..A->..Z is the same as the step
         // count for each cycle ..Z->..Z afterwards. Furthermore, this step count is a multiple of the number of
         // L/R instructions. This method also checks these assumptions and throws exception if they do not hold.
         Function<String, Integer> calculateStepCount = from -> {

@@ -19,9 +19,9 @@ public class Day14 extends AbstractDay {
         return calculateLoad(tilt(table));
     }
 
-    private static int solve2(CharTable table, int iterations) {
+    private static int solve2(CharTable table, int iterationCount) {
         var list = new ArrayList<CharTable>();
-        for (int it = 0; it < iterations; it++) {
+        for (int it = 0; it < iterationCount; it++) {
             list.add(table);
             table = new CharTable(table);
             for (int i = 0; i < 4; i++) {
@@ -30,10 +30,10 @@ public class Day14 extends AbstractDay {
 
             var prev = list.indexOf(table); // linear search is acceptable here
             if (prev >= 0) {
-                // The current state already occured previously, so we found a cycle
+                // The current state already occurred previously, so we found a cycle
                 int cycleLength = list.size() - prev;
-                int cycleCount = (iterations - prev) / cycleLength;
-                return calculateLoad(list.get(iterations - cycleCount * cycleLength));
+                int cycleCount = (iterationCount - prev) / cycleLength;
+                return calculateLoad(list.get(iterationCount - cycleCount * cycleLength));
             }
         }
         return calculateLoad(table); // not reached for large iteration count
