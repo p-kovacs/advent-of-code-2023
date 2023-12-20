@@ -109,11 +109,24 @@ public record Range(long min, long max) {
     }
 
     /**
-     * Returns a new range by shifting this range with the given signed delta value. For example, shifting
-     * {@code [5..9]} with 2 results in {@code [7..11]}, while shifting with -3 results in {@code [2..6]}.
+     * Returns a new range by shifting this range with the given signed delta value.
+     * <p>
+     * For example, shifting {@code [5..9]} with 2 results in {@code [7..11]}, while shifting with -3 results in
+     * {@code [2..6]}.
      */
     public Range shift(long delta) {
         return new Range(min + delta, max + delta);
+    }
+
+    /**
+     * Returns a new range by extending this range with the given delta value in both directions. Negative parameter
+     * means shrinking.
+     * <p>
+     * For example, extending {@code [5..9]} with 2 results in {@code [3..11]}, while extending with -1 results in
+     * {@code [6..8]}.
+     */
+    public Range extend(long delta) {
+        return new Range(min - delta, max + delta);
     }
 
     /**

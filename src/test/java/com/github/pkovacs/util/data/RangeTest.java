@@ -49,9 +49,13 @@ class RangeTest {
         assertArrayEquals(new long[] { 5, 6, 7, 8, 9, 10, 11, 12 }, z.stream().toArray());
         assertEquals(x.count(), x.stream().count());
 
+        assertEquals(new Range(7, 11), new Range(5, 9).shift(2));
+        assertEquals(new Range(2, 6), new Range(5, 9).shift(-3));
+
+        assertEquals(new Range(3, 11), new Range(5, 9).extend(2));
+        assertEquals(new Range(6, 8), new Range(5, 9).extend(-1));
+
         assertEquals("[12..42]", x.toString());
-        assertEquals("[17..47]", x.shift(5).toString());
-        assertEquals("[10..40]", x.shift(-2).toString());
     }
 
     @Test
