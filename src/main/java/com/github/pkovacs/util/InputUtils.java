@@ -57,7 +57,7 @@ public class InputUtils {
      * and you would like to read it without line breaks (in contrast with {@link #readString(Path)}).
      */
     public static String readFirstLine(Path path) {
-        return readLines(path).get(0);
+        return readLines(path).getFirst();
     }
 
     /**

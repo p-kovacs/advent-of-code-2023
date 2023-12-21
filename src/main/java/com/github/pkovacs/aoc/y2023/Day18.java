@@ -201,7 +201,7 @@ public class Day18 extends AbstractDay {
             };
             list.add(pos);
         }
-        if (!pos.equals(list.get(0))) {
+        if (!pos.equals(list.getFirst())) {
             throw new IllegalArgumentException("Not a closed loop.");
         }
         return list;

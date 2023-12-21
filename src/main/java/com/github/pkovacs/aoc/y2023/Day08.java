@@ -11,7 +11,7 @@ public class Day08 extends AbstractDay {
         var lines = readLines(getInputPath());
 
         // Parse input
-        var cmd = lines.get(0);
+        var cmd = lines.getFirst();
         var left = new HashMap<String, String>();
         var right = new HashMap<String, String>();
         for (var line : lines.subList(2, lines.size())) {

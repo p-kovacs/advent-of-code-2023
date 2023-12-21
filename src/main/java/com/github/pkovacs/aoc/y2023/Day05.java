@@ -15,7 +15,7 @@ public class Day05 extends AbstractDay {
         var blocks = readLineBlocks(getInputPath());
 
         // Collect initial ranges for part 1 and part 2
-        var seeds = parseLongs(blocks.get(0).get(0));
+        var seeds = parseLongs(blocks.getFirst().getFirst());
         var ranges1 = Arrays.stream(seeds).mapToObj(s -> new Range(s, s)).toList();
         var ranges2 = new ArrayList<Range>();
         for (int i = 0; i < seeds.length; i += 2) {

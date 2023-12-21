@@ -22,7 +22,7 @@ public class Day01 extends AbstractDay {
 
     private static int getCalibrationValue(String line) {
         var digits = charsOf(line).filter(Character::isDigit).map(c -> c - '0').toList();
-        return digits.get(0) * 10 + digits.get(digits.size() - 1);
+        return digits.getFirst() * 10 + digits.getLast();
     }
 
     private static String convertDigits(String line) {

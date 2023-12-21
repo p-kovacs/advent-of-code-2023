@@ -51,8 +51,7 @@ public final class Path<T> {
             for (var e = this; e != null; e = e.prev) {
                 list.add(e.endNode);
             }
-            Collections.reverse(list);
-            nodes = Collections.unmodifiableList(list);
+            nodes = Collections.unmodifiableList(list.reversed());
         }
         return nodes;
     }
