@@ -1,5 +1,7 @@
 package com.github.pkovacs.aoc.y2023;
 
+import java.util.Set;
+
 import com.github.pkovacs.aoc.AbstractDay;
 import com.github.pkovacs.util.alg.Bfs;
 import com.github.pkovacs.util.data.Cell;
@@ -21,6 +23,7 @@ public class Day21 extends AbstractDay {
      * assume that there are no rocks in the row and column of the start tile and at the border of the garden.
      * Consequently, we can safely assume that for each tile at the border of the garden, the minimum step count
      * to reach that tile from the start tile is equal to the "taxicab" (aka. Manhattan) distance of the tiles.
+     * This method also checks these assumptions and throws exception if they do not hold.
      * <p>
      * Furthermore, note that if a tile is reachable in K steps, then it is also reachable in K + 2 * n steps
      * for each positive integer n.
@@ -34,6 +37,10 @@ public class Day21 extends AbstractDay {
      * category (using the position of the tile that is closest to the start tile and the remaining step count).
      */
     private static long solve2(CharTable table) {
+        if (!checkAssumptionsForPart2(table)) {
+            throw new IllegalArgumentException("Assumptions do not hold for the input.");
+        }
+
         var start = table.find('S');
         table.set(start, '.');
 
@@ -81,6 +88,16 @@ public class Day21 extends AbstractDay {
         return Bfs.run(start, c -> table.neighbors(c).filter(n -> table.get(n) != '#').toList()).values().stream()
                 .filter(p -> p.dist() <= maxSteps && p.dist() % 2 == maxSteps % 2)
                 .count();
+    }
+
+    private static boolean checkAssumptionsForPart2(CharTable table) {
+        var start = table.find('S');
+        int size = table.rowCount();
+        var set = Set.of(0, size / 2, size - 1);
+        return table.colCount() == size && size % 2 == 1
+                && start.row() == size / 2 && start.col() == size / 2
+                && table.cells().filter(c -> set.contains(c.row())).noneMatch(c -> table.get(c) == '#')
+                && table.cells().filter(c -> set.contains(c.col())).noneMatch(c -> table.get(c) == '#');
     }
 
 }

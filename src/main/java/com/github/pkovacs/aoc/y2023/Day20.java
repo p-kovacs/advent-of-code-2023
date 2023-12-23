@@ -63,8 +63,8 @@ public class Day20 extends AbstractDay {
          * we need to make particular assumptions (similarly to Day 8). It seems that each input file describes
          * a configuration in which a single conjunction node sends pulse to rx. Let's call this node the "sink".
          * Furthermore, each input node of the sink sends a high pulse in every k-th iteration. Therefore, the
-         * answer for part 2 is the least common multiple (LCM) of these cycle lengths. This solution exploits
-         * the assumptions without checking them.
+         * answer for part 2 is the least common multiple (LCM) of these cycle lengths. This method exploits these
+         * assumptions, but it does not check them (for the sake of simplicity).
          * <p>
          * In fact, it seems that each configuration actually combines 4 independent subsystems between the
          * broadcaster and the sink, and each subsystem independently produces a high pulse input for the sink
