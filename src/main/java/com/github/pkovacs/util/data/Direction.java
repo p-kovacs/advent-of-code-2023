@@ -40,14 +40,15 @@ public enum Direction {
      * Returns the direction corresponding to the given character.
      *
      * @param ch the direction character. One of 'N' (north), 'E' (east), 'S' (south), 'W' (west),
-     *         'U' (up), 'R' (right), 'D' (down), 'L' (left), and their lowercase variants.
+     *         'U' (up), 'R' (right), 'D' (down), 'L' (left), '^' (up), '>' (right), 'v' (down), '<' (left),
+     *         and their lowercase variants.
      */
     public static Direction fromChar(char ch) {
         return switch (ch) {
-            case 'n', 'N', 'u', 'U' -> NORTH;
-            case 'e', 'E', 'r', 'R' -> EAST;
-            case 's', 'S', 'd', 'D' -> SOUTH;
-            case 'w', 'W', 'l', 'L' -> WEST;
+            case 'n', 'N', 'u', 'U', '^' -> NORTH;
+            case 'e', 'E', 'r', 'R', '>' -> EAST;
+            case 's', 'S', 'd', 'D', 'v', 'V' -> SOUTH;
+            case 'w', 'W', 'l', 'L', '<' -> WEST;
             default -> throw new IllegalArgumentException("Unknown direction: '" + ch + "'.");
         };
     }
