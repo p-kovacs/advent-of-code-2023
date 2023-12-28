@@ -42,7 +42,7 @@ public class SolutionsTest {
                 new Arguments("Day21", Day21::main, "3574", "600090522932119"),
                 new Arguments("Day22", Day22::main, "413", "41610"),
                 new Arguments("Day23", Day23::main, "2034", "6302"),
-                new Arguments("Day24", Day24::main, "0", "0"),
+                new Arguments("Day24", Day24::main, "17776", "948978092202212"),
                 new Arguments("Day25", Day25::main, "0", "0")
         );
     }
