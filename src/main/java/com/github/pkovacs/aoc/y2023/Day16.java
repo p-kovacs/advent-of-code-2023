@@ -33,17 +33,26 @@ public class Day16 extends AbstractDay {
             char ch = table.get(st.cell);
             var list = new ArrayList<State>();
             if (ch == '.' || (ch == '-' && st.dir.isHorizontal()) || (ch == '|' && st.dir.isVertical())) {
-                list.add(st.step(st.dir)); // go forward
-            }
-            if (((ch == '-' || ch == '/') && st.dir.isVertical())
-                    || ((ch == '|' || ch == '\\') && st.dir.isHorizontal())) {
-                list.add(st.step(st.dir.rotateRight())); // turn right
+                var next = st.step(st.dir); // go forward
+                if (table.containsCell(next.cell)) {
+                    list.add(next);
+                }
             }
             if (((ch == '-' || ch == '\\') && st.dir.isVertical())
                     || ((ch == '|' || ch == '/') && st.dir.isHorizontal())) {
-                list.add(st.step(st.dir.rotateLeft())); // turn left
+                var next = st.step(st.dir.rotateLeft()); // turn left
+                if (table.containsCell(next.cell)) {
+                    list.add(next);
+                }
             }
-            return list.stream().filter(s -> table.containsCell(s.cell)).toList();
+            if (((ch == '-' || ch == '/') && st.dir.isVertical())
+                    || ((ch == '|' || ch == '\\') && st.dir.isHorizontal())) {
+                var next = st.step(st.dir.rotateRight()); // turn right
+                if (table.containsCell(next.cell)) {
+                    list.add(next);
+                }
+            }
+            return list;
         });
         return res.keySet().stream().map(s -> s.cell).distinct().count();
     }

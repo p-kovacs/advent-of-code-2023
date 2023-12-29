@@ -24,18 +24,24 @@ public class Day17 extends AbstractDay {
         var sources = List.of(new State(table.topLeft(), Direction.SOUTH, 0),
                 new State(table.topLeft(), Direction.EAST, 0));
         var path = Dijkstra.findPathFromAny(sources, st -> {
-            var list = new ArrayList<State>();
+            var list = new ArrayList<Edge<State>>();
             if (st.forward < maxForward) {
-                list.add(st.step(st.dir)); // go forward
+                var forward = st.step(st.dir);
+                if (table.containsCell(forward.cell)) {
+                    list.add(Edge.of(forward, table.get(forward.cell)));
+                }
             }
             if (st.forward >= minForward) {
-                list.add(st.step(st.dir.rotateLeft())); // turn left
-                list.add(st.step(st.dir.rotateRight())); // turn right
+                var left = st.step(st.dir.rotateLeft());
+                if (table.containsCell(left.cell)) {
+                    list.add(Edge.of(left, table.get(left.cell)));
+                }
+                var right = st.step(st.dir.rotateRight());
+                if (table.containsCell(right.cell)) {
+                    list.add(Edge.of(right, table.get(right.cell)));
+                }
             }
-            return list.stream()
-                    .filter(s -> table.containsCell(s.cell))
-                    .map(s -> Edge.of(s, table.get(s.cell)))
-                    .toList();
+            return list;
         }, s -> s.cell.equals(table.bottomRight()) && s.forward >= minForward).orElseThrow();
         return path.dist();
     }
