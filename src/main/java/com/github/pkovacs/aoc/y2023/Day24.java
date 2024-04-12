@@ -149,11 +149,11 @@ public class Day24 extends AbstractDay {
      * calculations. This condition most likely holds for each input file, so we simply throw an exception if it does
      * not hold.
      * <p>
-     * Furthermore, we should also take care of the conditions for equations (1'), (2'), (3'), (4'). For example,
+     * Furthermore, we should also take care of the preconditions for equations (1'), (2'), (3'), (4'). For example,
      * if {@code vx == vx1}, then (A) might hold even if the original equation (1) does not. Therefore, in such
      * special cases, we should check if {@code x == x1} also holds. And similarly for each coordinate of each
      * hailstone: if any coordinate of a hailstone's velocity is equal to the corresponding coordinate of the
-     * rock's velocity, then that coordinate of their starting positions must also be equal.
+     * rock's velocity, then their starting positions must also be equal at that coordinate.
      * <p>
      * Another issue to be considered is numerical stability. It turned out that using double values for internal
      * calculations occasionally results in off-by-one errors after rounding to long at the end (depending on the
