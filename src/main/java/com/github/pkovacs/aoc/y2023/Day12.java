@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-import com.github.pkovacs.aoc.AbstractDay;
-
 public class Day12 extends AbstractDay {
 
     public static void main(String[] args) {

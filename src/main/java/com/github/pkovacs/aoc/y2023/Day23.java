@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import com.github.pkovacs.aoc.AbstractDay;
 import com.github.pkovacs.util.alg.Bfs;
 import com.github.pkovacs.util.data.Cell;
 import com.github.pkovacs.util.data.CharTable;

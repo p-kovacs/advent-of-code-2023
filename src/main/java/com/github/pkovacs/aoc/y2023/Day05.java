@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
-import com.github.pkovacs.aoc.AbstractDay;
 import com.github.pkovacs.util.Utils;
 import com.github.pkovacs.util.data.Range;
 

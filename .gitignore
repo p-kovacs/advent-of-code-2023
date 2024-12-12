@@ -20,3 +20,7 @@ bin/
 
 # Mac
 .DS_Store
+
+# Personal files
+input/day*.txt
+input/session.txt

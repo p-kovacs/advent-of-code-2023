@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.github.pkovacs.aoc.AbstractDay;
-
 public class Day20 extends AbstractDay {
 
     public static void main(String[] args) {

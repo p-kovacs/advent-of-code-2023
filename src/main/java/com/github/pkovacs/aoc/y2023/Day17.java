@@ -3,7 +3,6 @@ package com.github.pkovacs.aoc.y2023;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.pkovacs.aoc.AbstractDay;
 import com.github.pkovacs.util.alg.Dijkstra;
 import com.github.pkovacs.util.alg.Dijkstra.Edge;
 import com.github.pkovacs.util.data.Cell;

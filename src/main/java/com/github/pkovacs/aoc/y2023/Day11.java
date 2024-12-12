@@ -3,7 +3,6 @@ package com.github.pkovacs.aoc.y2023;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
-import com.github.pkovacs.aoc.AbstractDay;
 import com.github.pkovacs.util.data.CharTable;
 
 public class Day11 extends AbstractDay {
