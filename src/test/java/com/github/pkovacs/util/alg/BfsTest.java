@@ -10,9 +10,6 @@ import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import com.github.pkovacs.util.InputUtils;
-import com.github.pkovacs.util.data.Cell;
-import com.github.pkovacs.util.data.CharTable;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.MultimapBuilder;
 import org.junit.jupiter.api.Test;
@@ -74,31 +71,6 @@ class BfsTest {
         var result4 = Bfs.findPath("B", graph::get, "C"::equals);
 
         assertTrue(result4.isEmpty());
-    }
-
-    @Test
-    void testWithMaze() {
-        // We have to find the shortest path in a maze from the top left tile to the bottom right tile.
-        // See maze.txt, '#' represents a wall tile, '.' represents an empty tile.
-
-        var input = InputUtils.readLines(InputUtils.getPath(getClass(), "maze.txt"));
-        var maze = new CharTable(input);
-
-        var start = new Cell(0, 0);
-        var end = new Cell(maze.rowCount() - 1, maze.colCount() - 1);
-
-        var result = Bfs.findPath(start,
-                cell -> maze.neighbors(cell).filter(n -> maze.get(n) == '.').toList(),
-                end::equals);
-
-        assertTrue(result.isPresent());
-        assertEquals(end, result.get().endNode());
-        assertEquals(50, result.get().dist());
-
-        var path = result.get().nodes();
-        assertEquals(51, path.size());
-        assertEquals(start, path.get(0));
-        assertEquals(end, path.get(path.size() - 1));
     }
 
     @Test

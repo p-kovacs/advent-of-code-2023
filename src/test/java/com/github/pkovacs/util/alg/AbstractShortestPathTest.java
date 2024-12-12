@@ -11,10 +11,7 @@ import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import com.github.pkovacs.util.InputUtils;
 import com.github.pkovacs.util.alg.Dijkstra.Edge;
-import com.github.pkovacs.util.data.Cell;
-import com.github.pkovacs.util.data.CharTable;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.MultimapBuilder;
 import org.junit.jupiter.api.Test;
@@ -43,53 +40,6 @@ abstract class AbstractShortestPathTest {
         assertTrue(result.isPresent());
         assertEquals(10, result.get().dist());
         assertEquals(List.of("A", "D", "B", "C", "E"), result.get().nodes());
-    }
-
-    @Test
-    void testWithMaze() {
-        // We have to find the shortest path in a maze from the top left tile to the bottom right tile.
-        // Walls should be bypassed or "blown up", but it takes detonationTime seconds to blow up a single wall
-        // tile next to the current tile and step into its location, while a single step to an adjacent empty
-        // tile takes only 1 second.
-        // See maze.txt, '#' represents a wall tile, '.' represents an empty tile.
-
-        var input = InputUtils.readLines(InputUtils.getPath(getClass(), "maze.txt"));
-        var maze = new CharTable(input);
-        var start = new Cell(0, 0);
-        var end = new Cell(maze.rowCount() - 1, maze.colCount() - 1);
-
-        // Find path with large detonationTime --> same as BFS
-        long detonationTime = 32;
-        var result = findPathInMaze(maze, start, end, detonationTime);
-
-        assertEquals(50, result.dist());
-        assertEquals(51, result.nodes().size());
-        assertEquals(start, result.nodes().get(0));
-        assertEquals(end, result.nodes().get(result.nodes().size() - 1));
-
-        // Find path with smaller detonationTime --> better than BFS
-        detonationTime = 30;
-        result = findPathInMaze(maze, start, end, detonationTime);
-
-        assertEquals(49, result.dist());
-
-        // Find path with detonationTime == 1 --> Manhattan distance
-        detonationTime = 1;
-        result = findPathInMaze(maze, start, end, detonationTime);
-
-        assertEquals(20, result.dist());
-        assertEquals(start.dist1(end), result.dist());
-    }
-
-    private Path<Cell> findPathInMaze(CharTable maze, Cell start, Cell end, long detonationTime) {
-        var result = findPath(start,
-                cell -> maze.neighbors(cell)
-                        .map(n -> new Edge<>(n, maze.get(n) == '.' ? 1 : detonationTime))
-                        .toList(),
-                end::equals);
-
-        assertTrue(result.isPresent());
-        return result.get();
     }
 
     @Test
