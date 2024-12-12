@@ -6,7 +6,6 @@ import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.List;
 
-import com.github.pkovacs.aoc.AbstractDay;
 import com.github.pkovacs.util.data.Vector;
 
 public class Day24 extends AbstractDay {

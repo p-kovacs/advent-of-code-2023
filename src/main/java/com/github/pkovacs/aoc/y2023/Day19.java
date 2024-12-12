@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.LongStream;
 
-import com.github.pkovacs.aoc.AbstractDay;
 import com.github.pkovacs.util.Utils;
 import com.github.pkovacs.util.data.Range;
 

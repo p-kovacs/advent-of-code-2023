@@ -3,8 +3,6 @@ package com.github.pkovacs.aoc.y2023;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 
-import com.github.pkovacs.aoc.AbstractDay;
-
 public class Day09 extends AbstractDay {
 
     public static void main(String[] args) {

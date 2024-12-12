@@ -10,7 +10,6 @@ import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import com.github.pkovacs.aoc.AbstractDay;
 import com.github.pkovacs.util.alg.Bfs;
 import com.github.pkovacs.util.data.Point;
 import com.github.pkovacs.util.data.Range;

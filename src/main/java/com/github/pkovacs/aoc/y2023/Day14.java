@@ -2,7 +2,6 @@ package com.github.pkovacs.aoc.y2023;
 
 import java.util.ArrayList;
 
-import com.github.pkovacs.aoc.AbstractDay;
 import com.github.pkovacs.util.data.CharTable;
 
 public class Day14 extends AbstractDay {

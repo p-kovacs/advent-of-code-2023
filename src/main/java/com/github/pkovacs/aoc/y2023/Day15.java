@@ -5,8 +5,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import com.github.pkovacs.aoc.AbstractDay;
-
 public class Day15 extends AbstractDay {
 
     public static void main(String[] args) {

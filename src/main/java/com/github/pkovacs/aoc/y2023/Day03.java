@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import com.github.pkovacs.aoc.AbstractDay;
 import com.github.pkovacs.util.RegexUtils;
 
 public class Day03 extends AbstractDay {

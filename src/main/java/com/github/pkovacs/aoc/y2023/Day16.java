@@ -3,7 +3,6 @@ package com.github.pkovacs.aoc.y2023;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
-import com.github.pkovacs.aoc.AbstractDay;
 import com.github.pkovacs.util.alg.Bfs;
 import com.github.pkovacs.util.data.Cell;
 import com.github.pkovacs.util.data.CharTable;

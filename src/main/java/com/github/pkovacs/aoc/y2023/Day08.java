@@ -3,8 +3,6 @@ package com.github.pkovacs.aoc.y2023;
 import java.util.HashMap;
 import java.util.function.Function;
 
-import com.github.pkovacs.aoc.AbstractDay;
-
 public class Day08 extends AbstractDay {
 
     public static void main(String[] args) {

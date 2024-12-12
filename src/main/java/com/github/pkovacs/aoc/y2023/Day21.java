@@ -2,7 +2,6 @@ package com.github.pkovacs.aoc.y2023;
 
 import java.util.Set;
 
-import com.github.pkovacs.aoc.AbstractDay;
 import com.github.pkovacs.util.alg.Bfs;
 import com.github.pkovacs.util.data.Cell;
 import com.github.pkovacs.util.data.CharTable;
