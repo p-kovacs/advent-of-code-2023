@@ -3,10 +3,10 @@ package com.github.pkovacs.aoc.y2023;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
-import com.github.pkovacs.util.alg.Bfs;
-import com.github.pkovacs.util.data.Cell;
-import com.github.pkovacs.util.data.CharTable;
-import com.github.pkovacs.util.data.Direction;
+import com.github.pkovacs.util.Bfs;
+import com.github.pkovacs.util.CharTable;
+import com.github.pkovacs.util.Dir;
+import com.github.pkovacs.util.Pos;
 
 public class Day16 extends AbstractDay {
 
@@ -14,13 +14,13 @@ public class Day16 extends AbstractDay {
         var lines = readLines(getInputPath());
         var table = new CharTable(lines);
 
-        long ans1 = count(table, new State(table.topLeft(), Direction.EAST));
+        long ans1 = count(table, new State(table.topLeft(), Dir.E));
 
         long ans2 = Stream.of(
-                table.firstRow().map(c -> new State(c, Direction.SOUTH)),
-                table.lastRow().map(c -> new State(c, Direction.NORTH)),
-                table.firstCol().map(c -> new State(c, Direction.EAST)),
-                table.lastCol().map(c -> new State(c, Direction.WEST))
+                table.firstRow().map(c -> new State(c, Dir.S)),
+                table.lastRow().map(c -> new State(c, Dir.N)),
+                table.firstCol().map(c -> new State(c, Dir.E)),
+                table.lastCol().map(c -> new State(c, Dir.W))
         ).flatMap(s -> s).mapToLong(s -> count(table, s)).max().orElseThrow();
 
         System.out.println("Part 1: " + ans1);
@@ -28,37 +28,37 @@ public class Day16 extends AbstractDay {
     }
 
     private static long count(CharTable table, State start) {
-        var res = Bfs.run(start, st -> {
-            char ch = table.get(st.cell);
+        var paths = Bfs.findPaths(st -> {
+            char ch = table.get(st.pos);
             var list = new ArrayList<State>();
             if (ch == '.' || (ch == '-' && st.dir.isHorizontal()) || (ch == '|' && st.dir.isVertical())) {
                 var next = st.step(st.dir); // go forward
-                if (table.containsCell(next.cell)) {
+                if (table.containsCell(next.pos)) {
                     list.add(next);
                 }
             }
             if (((ch == '-' || ch == '\\') && st.dir.isVertical())
                     || ((ch == '|' || ch == '/') && st.dir.isHorizontal())) {
                 var next = st.step(st.dir.rotateLeft()); // turn left
-                if (table.containsCell(next.cell)) {
+                if (table.containsCell(next.pos)) {
                     list.add(next);
                 }
             }
             if (((ch == '-' || ch == '/') && st.dir.isVertical())
                     || ((ch == '|' || ch == '\\') && st.dir.isHorizontal())) {
                 var next = st.step(st.dir.rotateRight()); // turn right
-                if (table.containsCell(next.cell)) {
+                if (table.containsCell(next.pos)) {
                     list.add(next);
                 }
             }
-            return list;
-        });
-        return res.keySet().stream().map(s -> s.cell).distinct().count();
+            return list.stream();
+        }, start);
+        return paths.keySet().stream().map(s -> s.pos).distinct().count();
     }
 
-    private record State(Cell cell, Direction dir) {
-        State step(Direction newDir) {
-            return new State(cell.neighbor(newDir), newDir);
+    private record State(Pos pos, Dir dir) {
+        State step(Dir newDir) {
+            return new State(pos.neighbor(newDir), newDir);
         }
     }
 

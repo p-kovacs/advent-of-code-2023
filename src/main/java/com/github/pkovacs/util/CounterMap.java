@@ -1,4 +1,4 @@
-package com.github.pkovacs.util.data;
+package com.github.pkovacs.util;
 
 import java.util.HashMap;
 import java.util.function.UnaryOperator;
@@ -13,7 +13,7 @@ import java.util.stream.LongStream;
  * {@code null} for a key that is not contained in the map explicitly. Use {@link #getValue(Object)} when you
  * would like to exploit the default value.
  */
-public class CounterMap<K> extends HashMap<K, Long> {
+public final class CounterMap<K> extends HashMap<K, Long> {
 
     public CounterMap() {
         super();

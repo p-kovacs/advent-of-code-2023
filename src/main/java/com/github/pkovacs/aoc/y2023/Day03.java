@@ -6,8 +6,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import com.github.pkovacs.util.RegexUtils;
-
 public class Day03 extends AbstractDay {
 
     public static void main(String[] args) {
@@ -30,18 +28,18 @@ public class Day03 extends AbstractDay {
     }
 
     private static Stream<Operand> parseOperands(List<String> lines, int row) {
-        return RegexUtils.findAllMatches("[0-9]+", lines.get(row)).stream()
+        return findAllMatches("[0-9]+", lines.get(row)).stream()
                 .map(m -> parseOperand(lines, row, m.start(), m.end()));
     }
 
     private static Operand parseOperand(List<String> lines, int row, int c1, int c2) {
         for (int i = row - 1; i <= row + 1; i++) {
             for (int j = c1 - 1; j <= c2; j++) {
-                if (i >= 0 && i < lines.size() && j >= 0 && j < lines.get(i).length()) {
+                if (isValidIndex(i, lines) && isValidIndex(j, lines.get(i))) {
                     char ch = lines.get(i).charAt(j);
                     if (ch != '.' && !Character.isDigit(ch)) {
                         // Note: here we assume that at most one symbol is adjacent to any part number
-                        return new Operand(Long.parseLong(lines.get(row).substring(c1, c2)), new Operator(i, j, ch));
+                        return new Operand(parseLong(lines.get(row).substring(c1, c2)), new Operator(i, j, ch));
                     }
                 }
             }

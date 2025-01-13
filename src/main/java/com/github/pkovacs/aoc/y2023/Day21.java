@@ -2,9 +2,9 @@ package com.github.pkovacs.aoc.y2023;
 
 import java.util.Set;
 
-import com.github.pkovacs.util.alg.Bfs;
-import com.github.pkovacs.util.data.Cell;
-import com.github.pkovacs.util.data.CharTable;
+import com.github.pkovacs.util.Bfs;
+import com.github.pkovacs.util.CharTable;
+import com.github.pkovacs.util.Pos;
 
 public class Day21 extends AbstractDay {
 
@@ -43,12 +43,12 @@ public class Day21 extends AbstractDay {
         var start = table.find('S');
         table.set(start, '.');
 
-        int size = table.rowCount();
+        int size = table.width();
         long maxDist = 26501365;
 
         // Number of reachable tiles in odd/even steps in inner gardens
-        long innerOddTileCount = countReachableFields(table, start, table.rowCount());
-        long innerEvenTileCount = countReachableFields(table, start, table.rowCount() + 1);
+        long innerOddTileCount = countReachableFields(table, start, table.height());
+        long innerEvenTileCount = countReachableFields(table, start, table.height() + 1);
 
         // Start with the middle garden
         long total = innerOddTileCount;
@@ -66,10 +66,10 @@ public class Day21 extends AbstractDay {
             } else {
                 // N, E, S, W gardens
                 if (remStraight >= 0) {
-                    total += countReachableFields(table, new Cell(size - 1, start.col()), remStraight);
-                    total += countReachableFields(table, new Cell(start.row(), 0), remStraight);
-                    total += countReachableFields(table, new Cell(0, start.col()), remStraight);
-                    total += countReachableFields(table, new Cell(start.row(), size - 1), remStraight);
+                    total += countReachableFields(table, new Pos(start.x, size - 1), remStraight);
+                    total += countReachableFields(table, new Pos(0, start.y), remStraight);
+                    total += countReachableFields(table, new Pos(start.x, 0), remStraight);
+                    total += countReachableFields(table, new Pos(size - 1, start.y), remStraight);
                 }
 
                 // "Diagonal" gardens in directions NE, SE, SW, NW
@@ -83,20 +83,23 @@ public class Day21 extends AbstractDay {
         return total;
     }
 
-    private static long countReachableFields(CharTable table, Cell start, long maxSteps) {
-        return Bfs.run(start, c -> table.neighbors(c).filter(n -> table.get(n) != '#').toList()).values().stream()
+    static int cc = 0;
+
+    private static long countReachableFields(CharTable table, Pos start, long maxSteps) {
+        cc++;
+        return Bfs.findPaths(table.graph(c -> c != '#'), start).values().stream()
                 .filter(p -> p.dist() <= maxSteps && p.dist() % 2 == maxSteps % 2)
                 .count();
     }
 
     private static boolean checkAssumptionsForPart2(CharTable table) {
         var start = table.find('S');
-        int size = table.rowCount();
+        int size = table.height();
         var set = Set.of(0, size / 2, size - 1);
-        return table.colCount() == size && size % 2 == 1
-                && start.row() == size / 2 && start.col() == size / 2
-                && table.cells().filter(c -> set.contains(c.row())).noneMatch(c -> table.get(c) == '#')
-                && table.cells().filter(c -> set.contains(c.col())).noneMatch(c -> table.get(c) == '#');
+        return table.width() == size && size % 2 == 1
+                && start.x == size / 2 && start.y == size / 2
+                && table.cells().filter(p -> set.contains(p.xInt())).noneMatch(p -> table.get(p) == '#')
+                && table.cells().filter(p -> set.contains(p.yInt())).noneMatch(c -> table.get(c) == '#');
     }
 
 }

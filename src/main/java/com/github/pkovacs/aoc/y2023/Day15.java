@@ -8,8 +8,8 @@ import java.util.stream.IntStream;
 public class Day15 extends AbstractDay {
 
     public static void main(String[] args) {
-        var line = readFirstLine(getInputPath());
-        var steps = Arrays.stream(line.split(",")).toList();
+        var lines = readLines(getInputPath());
+        var steps = Arrays.stream(lines.getFirst().split(",")).toList();
 
         System.out.println("Part 1: " + solve1(steps));
         System.out.println("Part 2: " + solve2(steps));
@@ -27,7 +27,7 @@ public class Day15 extends AbstractDay {
                 boxes.get(hash(label)).remove(label);
             } else {
                 var label = step.split("=")[0];
-                int power = Integer.parseInt(step.split("=")[1]);
+                int power = parseInt(step.split("=")[1]);
                 boxes.get(hash(label)).put(label, power);
             }
         }

@@ -41,7 +41,7 @@ public class Day02 extends AbstractDay {
         int[] c = new int[3];
         for (var part : s.split(", ")) {
             int i = part.endsWith("red") ? 0 : (part.endsWith("green") ? 1 : 2);
-            c[i] = Integer.parseInt(part.split(" ")[0]);
+            c[i] = parseInt(part.split(" ")[0]);
         }
         return new Config(c[0], c[1], c[2]);
     }

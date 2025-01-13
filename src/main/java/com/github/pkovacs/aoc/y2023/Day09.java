@@ -13,7 +13,10 @@ public class Day09 extends AbstractDay {
     }
 
     private static long extrapolate(String line, int part) {
-        var values = part == 1 ? parseLongs(line) : reverseOf(parseLongs(line));
+        var values = parseLongs(line);
+        if (part == 2) {
+            reverse(values);
+        }
 
         var diffs = new ArrayDeque<long[]>();
         diffs.add(values);

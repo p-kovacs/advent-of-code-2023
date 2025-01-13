@@ -6,7 +6,7 @@ import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.List;
 
-import com.github.pkovacs.util.data.Vector;
+import com.github.pkovacs.util.Vector;
 
 public class Day24 extends AbstractDay {
 
@@ -66,19 +66,19 @@ public class Day24 extends AbstractDay {
      * To avoid numerical issues, {@link BigDecimal} is used for the calculation instead of double.
      */
     private static boolean hasIntersectionInArea(Hailstone h1, Hailstone h2, BigDecimal min, BigDecimal max) {
-        if (h1.v.x() == 0 || h2.v.x() == 0) {
+        if (h1.v.x == 0 || h2.v.x == 0) {
             throw new IllegalArgumentException("Velocity vector with x coordinate equal to zero is not supported.");
         }
 
-        var m1 = BigDecimal.valueOf(h1.v.y()).divide(BigDecimal.valueOf(h1.v.x()), MC);
-        var b1 = BigDecimal.valueOf(h1.p.y()).subtract(m1.multiply(BigDecimal.valueOf(h1.p.x()), MC));
-        var m2 = BigDecimal.valueOf(h2.v.y()).divide(BigDecimal.valueOf(h2.v.x()), MC);
-        var b2 = BigDecimal.valueOf(h2.p.y()).subtract(m2.multiply(BigDecimal.valueOf(h2.p.x()), MC));
+        var m1 = BigDecimal.valueOf(h1.v.y).divide(BigDecimal.valueOf(h1.v.x), MC);
+        var b1 = BigDecimal.valueOf(h1.p.y).subtract(m1.multiply(BigDecimal.valueOf(h1.p.x), MC));
+        var m2 = BigDecimal.valueOf(h2.v.y).divide(BigDecimal.valueOf(h2.v.x), MC);
+        var b2 = BigDecimal.valueOf(h2.p.y).subtract(m2.multiply(BigDecimal.valueOf(h2.p.x), MC));
 
         if (isZero(m1.subtract(m2))) {
             // Parallel lines: check if the starting position of h2 is on the line of h1 or not
-            var expectedY = m1.multiply(BigDecimal.valueOf(h2.p.x()), MC).add(b1);
-            if (isZero(BigDecimal.valueOf(h2.p.y()).subtract(expectedY))) {
+            var expectedY = m1.multiply(BigDecimal.valueOf(h2.p.x), MC).add(b1);
+            if (isZero(BigDecimal.valueOf(h2.p.y).subtract(expectedY))) {
                 throw new IllegalArgumentException("Two hailstones have the same line.");
             }
             return false;
@@ -87,8 +87,8 @@ public class Day24 extends AbstractDay {
             var x = b2.subtract(b1).divide(m1.subtract(m2), MC);
             var y = m1.multiply(x, MC).add(b1);
 
-            return x.subtract(BigDecimal.valueOf(h1.p.x())).signum() == Math.signum(h1.v.x()) // future for h1
-                    && x.subtract(BigDecimal.valueOf(h2.p.x())).signum() == Math.signum(h2.v.x()) // future for h2
+            return x.subtract(BigDecimal.valueOf(h1.p.x)).signum() == Math.signum(h1.v.x) // future for h1
+                    && x.subtract(BigDecimal.valueOf(h2.p.x)).signum() == Math.signum(h2.v.x) // future for h2
                     && min.compareTo(x) <= 0 && max.compareTo(x) >= 0 // x in the range
                     && min.compareTo(y) <= 0 && max.compareTo(y) >= 0; // y in the range
         }
@@ -164,7 +164,7 @@ public class Day24 extends AbstractDay {
         for (int i = 0; i < 4; i++) {
             var a = hailstones.get(i);
             var b = hailstones.get(i + 1);
-            matrix[i] = getMatrixRow(a.p.x(), a.p.y(), a.v.x(), a.v.y(), b.p.x(), b.p.y(), b.v.x(), b.v.y());
+            matrix[i] = getMatrixRow(a.p.x, a.p.y, a.v.x, a.v.y, b.p.x, b.p.y, b.v.x, b.v.y);
         }
         var result = gaussElimination(matrix);
         long x = Math.round(result[0].doubleValue());
@@ -177,16 +177,16 @@ public class Day24 extends AbstractDay {
         for (int i = 0; i < 4; i++) {
             var a = hailstones.get(i);
             var b = hailstones.get(i + 1);
-            matrix[i] = getMatrixRow(a.p.x(), a.p.z(), a.v.x(), a.v.z(), b.p.x(), b.p.z(), b.v.x(), b.v.z());
+            matrix[i] = getMatrixRow(a.p.x, a.p.z, a.v.x, a.v.z, b.p.x, b.p.z, b.v.x, b.v.z);
         }
         result = gaussElimination(matrix);
         long z = Math.round(result[1].doubleValue());
         long vz = Math.round(result[3].doubleValue());
 
         // Check compatibility with each hailstone
-        if (hailstones.stream().anyMatch(a -> a.v.x() == vx && a.p.x() != x)
-                || hailstones.stream().anyMatch(a -> a.v.y() == vy && a.p.y() != y)
-                || hailstones.stream().anyMatch(a -> a.v.z() == vz && a.p.z() != z)) {
+        if (hailstones.stream().anyMatch(a -> a.v.x == vx && a.p.x != x)
+                || hailstones.stream().anyMatch(a -> a.v.y == vy && a.p.y != y)
+                || hailstones.stream().anyMatch(a -> a.v.z == vz && a.p.z != z)) {
             throw new IllegalArgumentException("Necessary conditions do not hold.");
         }
 

@@ -5,16 +5,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
+import com.github.pkovacs.util.Range;
 import com.github.pkovacs.util.Utils;
-import com.github.pkovacs.util.data.Range;
 
 public class Day05 extends AbstractDay {
 
     public static void main(String[] args) {
-        var blocks = readLineBlocks(getInputPath());
+        var sections = readSections(getInputPath());
 
         // Collect initial ranges for part 1 and part 2
-        var seeds = parseLongs(blocks.getFirst().getFirst());
+        var seeds = parseLongs(sections.getFirst().getFirst());
         var ranges1 = Arrays.stream(seeds).mapToObj(s -> new Range(s, s)).toList();
         var ranges2 = new ArrayList<Range>();
         for (int i = 0; i < seeds.length; i += 2) {
@@ -23,8 +23,8 @@ public class Day05 extends AbstractDay {
 
         // Parse the map for each conversion phase as a list of RangeConverter objects
         var maps = new ArrayList<List<RangeConverter>>();
-        for (int i = 1; i < blocks.size(); i++) {
-            maps.add(blocks.get(i).stream().skip(1)
+        for (int i = 1; i < sections.size(); i++) {
+            maps.add(sections.get(i).stream().skip(1)
                     .map(Utils::parseLongs)
                     .map(v -> new RangeConverter(new Range(v[1], v[1] + v[2] - 1), v[0] - v[1]))
                     .toList());
@@ -57,7 +57,7 @@ public class Day05 extends AbstractDay {
         var in = range.intersection(source);
         return in.isEmpty()
                 ? Stream.of(range)
-                : Stream.of(new Range(range.min(), in.min() - 1), in, new Range(in.max() + 1, range.max()));
+                : Stream.of(new Range(range.min, in.min - 1), in, new Range(in.max + 1, range.max));
     }
 
     private static Range convert(Range range, List<RangeConverter> map) {

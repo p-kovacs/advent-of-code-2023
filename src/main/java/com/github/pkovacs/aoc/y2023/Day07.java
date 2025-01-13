@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import com.github.pkovacs.util.Utils;
-
 public class Day07 extends AbstractDay {
 
     public static void main(String[] args) {
@@ -34,7 +32,7 @@ public class Day07 extends AbstractDay {
             for (int i = 0; i < cards.length; i++) {
                 counts[cards[i]]++;
             }
-            bid = Long.parseLong(str.substring(6));
+            bid = parseLong(str.substring(6));
         }
 
         int getType() {
@@ -44,18 +42,15 @@ public class Day07 extends AbstractDay {
         }
 
         private int getType(int[] counts) {
-            int maxCount = Utils.streamOf(counts).max().orElseThrow();
-            int pairCount = (int) Utils.streamOf(counts).filter(i -> i == 2).count();
+            int maxCount = streamOf(counts).max().orElseThrow();
+            int pairCount = (int) streamOf(counts).filter(i -> i == 2).count();
 
-            if (maxCount == 1) {
-                return 0;
-            } else if (maxCount == 2) {
-                return pairCount;
-            } else if (maxCount == 3) {
-                return pairCount == 0 ? 3 : 4;
-            } else {
-                return maxCount + 1;
-            }
+            return switch (maxCount) {
+                case 1 -> 0;
+                case 2 -> pairCount;
+                case 3 -> (pairCount == 0) ? 3 : 4;
+                default -> maxCount + 1;
+            };
         }
 
         private int[] useJokerAs(int i) {

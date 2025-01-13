@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.github.pkovacs.util.data.Range;
+import com.github.pkovacs.util.Range;
 
 public class Day22 extends AbstractDay {
 
@@ -28,8 +28,8 @@ public class Day22 extends AbstractDay {
             var next = bricks.stream()
                     .filter(b -> !settled.contains(b) && settled.containsAll(below.get(b)))
                     .findFirst().orElseThrow();
-            long newMinZ = below.get(next).stream().mapToLong(b -> b.z.max()).max().orElse(0) + 1;
-            next.shiftZ(newMinZ - next.z.min());
+            long newMinZ = below.get(next).stream().mapToLong(b -> b.z.max).max().orElse(0) + 1;
+            next.shiftZ(newMinZ - next.z.min);
             settled.add(next);
         }
 
@@ -38,7 +38,7 @@ public class Day22 extends AbstractDay {
         var supports = new HashMap<Brick, Set<Brick>>();
         var supportedBy = new HashMap<Brick, Set<Brick>>();
         for (var a : settled) {
-            supports.put(a, below.get(a).stream().filter(b -> b.z.max() + 1 == a.z.min()).collect(Collectors.toSet()));
+            supports.put(a, below.get(a).stream().filter(b -> b.z.max + 1 == a.z.min).collect(Collectors.toSet()));
             supportedBy.put(a, new HashSet<>());
         }
         for (var a : settled) {
@@ -80,7 +80,7 @@ public class Day22 extends AbstractDay {
         }
 
         boolean isBelow(Brick other) {
-            return z.max() < other.z.min() && x.overlaps(other.x) && y.overlaps(other.y);
+            return z.max < other.z.min && x.overlaps(other.x) && y.overlaps(other.y);
         }
 
         void shiftZ(long delta) {

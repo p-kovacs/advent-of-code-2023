@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import com.github.pkovacs.util.alg.Bfs;
-import com.github.pkovacs.util.data.CounterMap;
+import com.github.pkovacs.util.Bfs;
+import com.github.pkovacs.util.CounterMap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
 
@@ -62,13 +62,13 @@ public class Day25 extends AbstractDay {
         // Find max-flow and min-cut using the Edmonds-Karp algorithm
         while (true) {
             // Find augmenting path from s to t using BFS
-            var result = Bfs.run(s,
-                    u -> graph.get(u).stream().filter(v -> residualCapacity.get(new Edge(u, v)) > 0).toList());
-            var path = result.get(t);
+            var paths = Bfs.findPaths(
+                    u -> graph.get(u).stream().filter(v -> residualCapacity.get(new Edge(u, v)) > 0), s);
+            var path = paths.get(t);
 
             // If no more paths can be found, return the result (the component of s)
             if (path == null) {
-                return result.keySet();
+                return paths.keySet();
             }
 
             // Adjust residual capacities along the augmenting path

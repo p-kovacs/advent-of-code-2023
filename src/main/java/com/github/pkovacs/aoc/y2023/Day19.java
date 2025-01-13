@@ -7,17 +7,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.LongStream;
 
+import com.github.pkovacs.util.Range;
 import com.github.pkovacs.util.Utils;
-import com.github.pkovacs.util.data.Range;
 
 public class Day19 extends AbstractDay {
 
     private static final int MAX = 4000;
 
     public static void main(String[] args) {
-        var blocks = readLineBlocks(getInputPath());
-        var workflows = parseWorkflows(blocks.get(0));
-        var parts = blocks.get(1).stream().map(Utils::parseLongs).toList();
+        var sections = readSections(getInputPath());
+
+        var workflows = parseWorkflows(sections.get(0));
+        var parts = sections.get(1).stream().map(Utils::parseLongs).toList();
 
         System.out.println("Part 1: " + solve1(workflows, parts));
         System.out.println("Part 2: " + solve2(workflows));
@@ -46,7 +47,7 @@ public class Day19 extends AbstractDay {
         if (current.equals("R") || Arrays.stream(ranges).anyMatch(Range::isEmpty)) {
             return 0;
         } else if (current.equals("A")) {
-            return Arrays.stream(ranges).mapToLong(Range::count).reduce(1, (a, b) -> a * b);
+            return Arrays.stream(ranges).mapToLong(Range::size).reduce(1, (a, b) -> a * b);
         }
 
         long count = 0;
@@ -74,7 +75,7 @@ public class Day19 extends AbstractDay {
             if (str.contains(":")) {
                 var parts = str.split(":");
                 int index = "xmas".indexOf(str.charAt(0));
-                long value = Long.parseLong(parts[0].substring(2));
+                long value = parseLong(parts[0].substring(2));
                 return str.charAt(1) == '<'
                         ? new Rule(index, new Range(1, value - 1), new Range(value, MAX), parts[1])
                         : new Rule(index, new Range(value + 1, MAX), new Range(1, value), parts[1]);

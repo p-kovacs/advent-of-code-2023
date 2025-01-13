@@ -1,29 +1,27 @@
 package com.github.pkovacs.aoc.y2023;
 
-import java.util.List;
 import java.util.stream.Stream;
 
-import com.github.pkovacs.util.alg.Bfs;
-import com.github.pkovacs.util.alg.Path;
-import com.github.pkovacs.util.data.Cell;
-import com.github.pkovacs.util.data.CharTable;
-import com.github.pkovacs.util.data.Direction;
+import com.github.pkovacs.util.Bfs;
+import com.github.pkovacs.util.CharTable;
+import com.github.pkovacs.util.Dir;
+import com.github.pkovacs.util.Path;
+import com.github.pkovacs.util.Pos;
 
 public class Day10 extends AbstractDay {
 
     public static void main(String[] args) {
-        var lines = readLines(getInputPath());
-        var table = new CharTable(lines);
+        var table = new CharTable(readLines(getInputPath()));
 
         System.out.println("Part 1: " + solve1(table));
-        System.out.println("Part 2: " + solve2(table));
-//        System.out.println("Part 2: " + solveWithRowScanning(table)); // a faster solution
+//        System.out.println("Part 2: " + solve2(table)); // original solution
+        System.out.println("Part 2: " + solveWithRowScanning(table)); // a faster solution
 
         // Note: a formula-based solution can also be given, see Day 18
     }
 
     private static long solve1(CharTable table) {
-        var loopMap = Bfs.run(table.find('S'), cell -> pipeNeighbors(table, cell));
+        var loopMap = Bfs.findPaths(p -> pipeNeighbors(table, p), table.find('S'));
         return loopMap.values().stream().mapToLong(Path::dist).max().orElseThrow();
     }
 
@@ -32,16 +30,16 @@ public class Day10 extends AbstractDay {
         var table = stretch(originalTable);
 
         // Clear cells except for the main loop
-        var loop = Bfs.run(table.find('S'), cell -> pipeNeighbors(table, cell)).keySet();
-        table.cells().filter(c -> !loop.contains(c)).forEach(c -> table.set(c, '.'));
+        var loop = Bfs.findPaths(p -> pipeNeighbors(table, p), table.find('S')).keySet();
+        table.cells().filter(p -> !loop.contains(p)).forEach(p -> table.set(p, '.'));
 
         // Find empty cells reachable from outside
-        var reached = Bfs.run(table.topLeft(), cell -> emptyNeighbors(table, cell)).keySet();
+        var reached = Bfs.findPaths(table.graph(c -> c == '.'), table.topLeft()).keySet();
 
         // Calculate the result
         return table.cells()
-                .filter(c -> c.row() % 2 == 1 && c.col() % 2 == 1) // original cell
-                .filter(c -> table.get(c) == '.' && !reached.contains(c)) // empty and not reachable from outside
+                .filter(p -> p.y % 2 == 1 && p.x % 2 == 1) // original cell
+                .filter(p -> table.get(p) == '.' && !reached.contains(p)) // empty and not reachable from outside
                 .count();
     }
 
@@ -51,35 +49,31 @@ public class Day10 extends AbstractDay {
      * that pipes remain continuous.
      */
     private static CharTable stretch(CharTable table) {
-        var result = new CharTable(table.rowCount() * 2 + 1, table.colCount() * 2 + 1, '.');
-        table.cells().forEach(c -> {
-            var rc = new Cell(2 * c.row() + 1, 2 * c.col() + 1);
-            result.set(rc, table.get(c));
-            result.set(rc.row(), rc.col() + 1, '-');
-            result.set(rc.row() + 1, rc.col(), '|');
+        var result = new CharTable(table.width() * 2 + 1, table.height() * 2 + 1, '.');
+        table.cells().forEach(p -> {
+            var rp = new Pos(2 * p.x + 1, 2 * p.y + 1);
+            result.set(rp, table.get(p));
+            result.set(rp.x + 1, rp.y, '-');
+            result.set(rp.x, rp.y + 1, '|');
         });
         return result;
     }
 
-    private static List<Cell> emptyNeighbors(CharTable table, Cell cell) {
-        return table.neighbors(cell).filter(c -> table.get(cell) == '.').toList();
-    }
-
-    private static List<Cell> pipeNeighbors(CharTable table, Cell cell) {
-        char ch = table.get(cell);
+    private static Stream<Pos> pipeNeighbors(CharTable table, Pos p) {
+        char ch = table.get(p);
         return ch == 'S'
-                ? table.neighbors(cell).filter(c -> pipeNeighbors(table, c).contains(cell)).toList()
-                : directions(ch).map(cell::neighbor).filter(table::containsCell).toList();
+                ? table.neighbors(p).filter(c -> pipeNeighbors(table, c).anyMatch(p::equals))
+                : directions(ch).map(p::neighbor).filter(table::containsCell);
     }
 
-    private static Stream<Direction> directions(char ch) {
+    private static Stream<Dir> directions(char ch) {
         return switch (ch) {
-            case '|' -> Stream.of(Direction.NORTH, Direction.SOUTH);
-            case '-' -> Stream.of(Direction.EAST, Direction.WEST);
-            case 'L' -> Stream.of(Direction.NORTH, Direction.EAST);
-            case 'J' -> Stream.of(Direction.NORTH, Direction.WEST);
-            case '7' -> Stream.of(Direction.SOUTH, Direction.WEST);
-            case 'F' -> Stream.of(Direction.SOUTH, Direction.EAST);
+            case '|' -> Stream.of(Dir.N, Dir.S);
+            case '-' -> Stream.of(Dir.E, Dir.W);
+            case 'L' -> Stream.of(Dir.N, Dir.E);
+            case 'J' -> Stream.of(Dir.N, Dir.W);
+            case '7' -> Stream.of(Dir.S, Dir.W);
+            case 'F' -> Stream.of(Dir.S, Dir.E);
             default -> Stream.of();
         };
     }
@@ -91,8 +85,8 @@ public class Day10 extends AbstractDay {
      */
     private static int solveWithRowScanning(CharTable table) {
         // Clear cells except for the main loop
-        var loop = Bfs.run(table.find('S'), cell -> pipeNeighbors(table, cell)).keySet();
-        table.cells().filter(c -> !loop.contains(c)).forEach(c -> table.set(c, '.'));
+        var loop = Bfs.findPaths(p -> pipeNeighbors(table, p), table.find('S')).keySet();
+        table.cells().filter(p -> !loop.contains(p)).forEach(p -> table.set(p, '.'));
 
         // Replace S symbol (it's inconvenient, but can be necessary)
         var start = table.find('S');
@@ -106,11 +100,11 @@ public class Day10 extends AbstractDay {
 
         // Count inner cells for each row
         int count = 0;
-        for (int i = 0; i < table.rowCount(); i++) {
+        for (int y = 0; y < table.height(); y++) {
             boolean inner = false;
             char lastBend = '*';
-            for (int j = 0; j < table.colCount(); j++) {
-                var ch = table.get(i, j);
+            for (int x = 0; x < table.width(); x++) {
+                var ch = table.get(x, y);
                 if (ch == 'L' || ch == 'F' || ch == '7' || ch == 'J') {
                     inner = (lastBend == 'L' && ch == '7') || (lastBend == 'F' && ch == 'J') ? !inner : inner;
                     lastBend = ch;
